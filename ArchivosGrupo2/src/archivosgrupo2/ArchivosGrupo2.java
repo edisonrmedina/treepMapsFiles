@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package archivosgrupo2;
+package archivosgrupo5;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -20,13 +20,15 @@ import javafx.stage.Stage;
  *
  * @author LENOVO
  */
-public class ArchivosGrupo2 extends Application {
+public class ArchivosGrupo5 extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("inicio.fxml"));
         Scene scene = new Scene(root, 960, 741.4);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Visualizador de archivos -- TreeMap-- Grupo 5");
+        
         primaryStage.show();
     }
 
