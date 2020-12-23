@@ -8,11 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ArchivosGrupo2.jar" size="2856" download="eager" />
+    <jar href="ArchivosGrupo2.jar" size="3147" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ArchivosGrupo2" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="archivosgrupo2.ArchivosGrupo2"  name="ArchivosGrupo2" />
+  <jfx:javafx-desc  width="800" height="600" main-class="archivosgrupo5.ArchivosGrupo5"  name="ArchivosGrupo2" />
   <update check="always"/>
 </jnlp>
