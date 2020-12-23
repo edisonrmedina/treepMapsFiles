@@ -1,42 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package archivosgrupo5;
-
-import java.io.IOException;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 
 /**
  *
  * @author LENOVO
  */
-public class ArchivosGrupo5 extends Application {
-    
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("inicio.fxml"));
-        Scene scene = new Scene(root, 960, 741.4);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Visualizador de archivos -- TreeMap-- Grupo 5");
-        
-        primaryStage.show();
-    }
+public class controladorArchivos {
+      @FXML
+    private ResourceBundle resources;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    @FXML
+    private URL location;
+
+    @FXML
+    private VBox mnBar;
     
+    
+
+    
+
+    @FXML
+    void initialize() {
+        assert mnBar != null : "fx:id=\"mnBar\" was not injected: check your FXML file 'inicio.fxml'.";    
+}
+    public void abrirDirectorio(){
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(new File("src"));
+        File selectedDir = dc.showDialog(null);
+        
+        File[] files = selectedDir.listFiles();
+        
+        
+        
+        System.out.println(selectedDir.getAbsolutePath());
+    }
 }
