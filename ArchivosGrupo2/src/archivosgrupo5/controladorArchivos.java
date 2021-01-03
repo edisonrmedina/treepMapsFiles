@@ -3,6 +3,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -29,10 +30,16 @@ public class controladorArchivos {
         dc.setInitialDirectory(new File("src"));
         File selectedDir = dc.showDialog(null);
         
-        File[] files = selectedDir.listFiles();
-        
-        
-        
-        System.out.println(selectedDir.getAbsolutePath());
+         try{
+            File[] files = selectedDir.listFiles();
+            System.out.println(selectedDir.getAbsolutePath());
+        }catch(NullPointerException ex){
+                Alert altDer = new Alert(Alert.AlertType.INFORMATION);
+                altDer.setTitle("Sin seleccion ");
+                altDer.setHeaderText("No se ha seleccionado ninguna carpeta");
+                altDer.show();
+        }
+           
+        }
     }
-}
+
