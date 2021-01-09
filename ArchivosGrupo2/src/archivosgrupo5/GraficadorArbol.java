@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package archivosgrupo5;
-
-import java.util.LinkedList;
 
 /**
  *
- * @author fioye
+ * @author LENOVO
  */
-public class TreeNode {
-    private String nombreDir;
-    private float tamanio;
-    private LinkedList<TreeMap> children; 
+public class GraficadorArbol {
+    
 }

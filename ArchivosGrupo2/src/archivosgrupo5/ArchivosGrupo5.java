@@ -16,6 +16,5 @@ public class ArchivosGrupo5 extends Application {
         Scene scene = new Scene(root, 960, 741.4);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Visualizador de archivos -- TreeMap-- Grupo 5");
-
         primaryStage.show();
     }}

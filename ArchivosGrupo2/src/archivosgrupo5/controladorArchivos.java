@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+
 /**
  *
  * @author LENOVO
@@ -33,6 +34,11 @@ public class controladorArchivos {
         
          try{
             File[] files = selectedDir.listFiles();
+            TreeMap root = ArbolDirectorios.creaArbolDeDirectorios(selectedDir);
+            System.out.println("Si");
+            for (File f: files){
+                System.out.println((double)f.length() + "B");
+            }
             System.out.println(selectedDir.getAbsolutePath());
         }catch(NullPointerException ex){
                 Alert altDer = new Alert(Alert.AlertType.INFORMATION);
