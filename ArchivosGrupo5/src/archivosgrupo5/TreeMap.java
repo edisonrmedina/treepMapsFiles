@@ -34,20 +34,19 @@ public class TreeMap<T> {
         return "TreeMap{" + "root=" + root + '}';
     }    
 
-    public List<TreeNode<T>> recorrerEnAnchura(TreeMap<T> root){
-        List<TreeNode<T>> recorrido=new LinkedList<>();
-        Queue<TreeNode<T>> cola=new LinkedList<>();
-        cola.add(root.getRoot());
+    public List<TreeMap<T>> recorrerEnAnchura(TreeMap<T> root){
+        List<TreeMap<T>> recorrido=new LinkedList<>();
+        Queue<TreeMap<T>> cola=new LinkedList<>();
+        cola.add(root);
         root.root.setVisited(true);
         while(!cola.isEmpty()){
-            TreeNode<T> nodo=cola.remove();
+            TreeMap<T> nodo=cola.remove();
             recorrido.add(nodo);
-            List<TreeMap<T>> hijos=nodo.getChildren();
+            List<TreeMap<T>> hijos=nodo.getRoot().getChildren();
             for(TreeMap<T> hijo: hijos){
-                TreeNode<T> hijoSelect=hijo.getRoot();
-                if(!hijoSelect.isVisited()){
-                    cola.add(hijoSelect);
-                    hijoSelect.setVisited(true);
+                if(!hijo.getRoot().isVisited()){
+                    cola.add(hijo);
+                    hijo.getRoot().setVisited(true);
                 }
             }
         }

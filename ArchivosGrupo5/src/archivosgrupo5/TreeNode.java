@@ -18,6 +18,7 @@ public class TreeNode<T> {
     private T content;
     private long size = 0;
     private boolean visited=false;
+    private boolean isDirectory;
 
     public boolean isVisited() {
         return visited;
@@ -45,12 +46,21 @@ public class TreeNode<T> {
     }
     public long sixe(){
         long totalSize = getSize( );
-        if( hasChildren( ) ){
+        if( isDirectory( ) ){
             List<TreeMap<T>> childrenList=getChildren();
             for (TreeMap<T> child:children)
                 totalSize += child.getRoot().sixe( );}
         return totalSize;
     }
+
+    public boolean isIsDirectory() {
+        return isDirectory;
+    }
+
+    public void setIsDirectory(boolean isDirectory) {
+        this.isDirectory = isDirectory;
+    }
+    
     public void setSize(long size) {
         this.size = size;
     }
@@ -72,7 +82,7 @@ public class TreeNode<T> {
         return "TreeNode{" + "children=" + children + ", content=" + content + ", size=" + size + '}';
     }
 
-    private boolean hasChildren() {
+    private boolean isDirectory() {
         return getChildren()==null;
     }
     

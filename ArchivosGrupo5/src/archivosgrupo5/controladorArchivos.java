@@ -98,24 +98,22 @@ public class controladorArchivos {
 
         tamanioTot.getChildren().addAll(graphicSizeTotal, extensionSize);
         container.getChildren().addAll(tamanioTot, graphics);
-        List<TreeNode<String>> arbolList=arbolArchivos.recorrerEnAnchura(arbolArchivos);
         long totalSize=arbolArchivos.recorrerTOTALtamanio(arbolArchivos);
         int counter=2;
-            for(TreeNode<String> node: arbolList){
-                Painting(node, graphics, 300.0, 200.0, counter,totalSize); 
-                counter++;
-            }
+        Painting(arbolArchivos, graphics, 300.0, 200.0, counter,totalSize);
+            
         
         center.getChildren().addAll(container);
 //        save.setDisable(false);
     }
-    public void Painting(TreeNode nodo, Pane pane, double width, double height,int counter,long size) { 
-         
-
+    public void Painting(TreeMap<String> map, Pane pane, double width, double height,int counter,long size) { 
+      List<TreeMap<String>> arbolList=map.recorrerEnAnchura(map);
+        for(TreeMap<String> nodo: arbolList){   
+        if(nodo.getRoot().isIsDirectory()){
             if(counter % 2 == 0) {
                 System.out.println("v"+nodo);
                 double fact1 = width;
-                double fact2 = height * (nodo.sixe()/ size);
+                double fact2 = height * (nodo.getRoot().sixe()/ size);
                 Rectangle shape = new Rectangle(fact1, fact2);
                 shape.setFill(getRandomColor());
                 shape.setStrokeType(StrokeType.INSIDE);
@@ -124,12 +122,12 @@ public class controladorArchivos {
                 
                 temp.getChildren().addAll(shape);
                   Label extensionSize = new Label();
-                setLabelSize(extensionSize, nodo.sixe(),(String)nodo.getContent());
+                setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
                 pane.getChildren().add(temp);
-                
+                counter++;
             }else {
                 System.out.println("h"+nodo);
-                double fact1 = width * (nodo.sixe() / size);
+                double fact1 = width * (nodo.getRoot().sixe() / size);
                 double fact2 = height;
                 Rectangle shape = new Rectangle(fact1, fact2);
                 shape.setFill(getRandomColor());
@@ -138,10 +136,31 @@ public class controladorArchivos {
                 VBox temp = new VBox();
                 temp.getChildren().addAll(shape);
                   Label extensionSize = new Label();
-                setLabelSize(extensionSize, nodo.sixe(),(String)nodo.getContent());
+                setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
                 pane.getChildren().add(temp);
-                
+                counter++;
+            } }else{
+            if (counter % 2 == 0) {
+                System.out.println("Directorio v"+nodo);
+                double size2 = nodo.getRoot().getSize();
+                HBox box = new HBox();
+                box.setMaxWidth(width);
+                box.setMaxHeight(height * (size2 / size));
+                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(),counter+1,size );
+                pane.getChildren().add(box);
+                counter++;
+            }
+            else {
+                System.out.println("Directorio h"+nodo);
+                double size2 = nodo.getRoot().getSize();
+                VBox box = new VBox();
+                box.setMaxWidth(width * (size2 / size));
+                box.setMaxHeight(height);
+                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(), counter+1,size);
+                pane.getChildren().add(box);
+                counter++;
             } 
+        }}
         
     }
     
