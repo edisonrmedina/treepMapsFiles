@@ -2,15 +2,20 @@ package archivosgrupo5;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -33,6 +38,9 @@ public class controladorArchivos {
     @FXML
     private Button btnSalir;
     
+    @FXML
+    private AnchorPane center;
+    
     void initialize() {
         assert mnBar != null : "fx:id=\"mnBar\" was not injected: check your FXML file 'inicio.fxml'.";    
 }
@@ -41,26 +49,37 @@ public class controladorArchivos {
         DirectoryChooser dc = new DirectoryChooser();
         dc.setInitialDirectory(new File("src"));
         File selectedDir = dc.showDialog(null);
-        
+        TreeMap arbol=null;
          try{
             File[] files = selectedDir.listFiles();
-            TreeMap root = ArbolDirectorios.creaArbolDeDirectorios(selectedDir);
+            arbol = ArbolDirectorios.creaArbolDeDirectorios(selectedDir);
+//            System.out.println(arbol);
+//            System.out.println(selectedDir.getAbsolutePath());
             
-            //GraficadorArbol.graficar(root);
-            //recorremos el 
-             recorrerPostOrden(root);
-            System.out.println(selectedDir.getAbsolutePath());
         }catch(NullPointerException ex){
                 Alert altDer = new Alert(Alert.AlertType.INFORMATION);
                 altDer.setTitle("Sin seleccion ");
                 altDer.setHeaderText("No se ha seleccionado ninguna carpeta");
                 altDer.show();
-        }
            
+        }visualizeButtonAction(arbol);
+    }
+    public void setLabelSize(Label lb, double amount,String content) {
+        lb.setStyle("-fx-font-weight: bold; -fx-font-size: 15");
+        DecimalFormat two = new DecimalFormat("0.00");
+        if (amount < 1024) {
+            lb.setText("("+content + amount + " KB" + ")");
+        } else if (amount > 1024 && amount < 1024 * 1024) {
+            lb.setText("("+content + two.format(amount / 1024) + " MB" + ")");
+        } else if (amount > 1024 * 1024 && amount < 1024 * 1024) {
+            lb.setText("(" +content + two.format(amount / 1024 * 1024) + " GB" + ")");
+        } else {
+            lb.setText("(" +content + two.format(amount / 1024 * 1024 * 1024) + " TB" + ")");
         }
-       public void visualizeButtonAction(TreeMap mapaArchivos) throws IOException {
+    }
+       public void visualizeButtonAction(TreeMap arbolArchivos) {
         VBox container = new VBox();
-        Pane SizeTotal = new Pane();
+        Pane tamanioTot = new Pane();
 
         HBox graphics = new HBox();
         graphics.setMaxWidth(960);
@@ -71,23 +90,46 @@ public class controladorArchivos {
         graphicSizeTotal.setHeight(25);
         graphicSizeTotal.setFill(Color.CORAL);
         graphicSizeTotal.setStroke(Color.WHITE);
-
         Label extensionSize = new Label();
-        setLabelSize(extensionSize, mapaArchivos.getChildren().get(0).getSize());
+        setLabelSize(extensionSize, arbolArchivos.getRoot().getSize(),(String)arbolArchivos.getRoot().getContent());
+//        Label tamanio = new Label();
+//        tamanio.setMinSize(minWidth, minHeight);
+//        tamanio.setMaxSize(minWidth, minHeight);
 
-        SizeTotal.getChildren().addAll(graphicSizeTotal, extensionSize);
-        container.getChildren().addAll(SizeTotal, graphics);
-        Painting(treeMap.getFirst(), graphics, 960.0, 650.0, "h");
+        tamanioTot.getChildren().addAll(graphicSizeTotal, extensionSize);
+        container.getChildren().addAll(tamanioTot, graphics);
+        List<TreeNode<String>> arbolList=arbolArchivos.recorrerEnAnchura(arbolArchivos);
+        long totalSize=arbolArchivos.recorrerTOTALtamanio(arbolArchivos);
+        int counter=2;
+            for(TreeNode<String> node: arbolList){
+                Painting(node, graphics, 300.0, 200.0, counter,totalSize); 
+                counter++;
+            }
+        
         center.getChildren().addAll(container);
-        save.setDisable(false);
+//        save.setDisable(false);
     }
+    public void Painting(TreeNode nodo, Pane pane, double width, double height,int counter,long size) { 
+         
 
-    public void Painting(Directory directory, Pane pane, double width, double height, String type) {
-        LinkedList<Directory> selected = directory.getDirectorios();
-        double size = directory.getSize();
-        selected.forEach((f) -> {
-            if (!f.isDirectory() && type.equals("h")) {
-                double fact1 = width * (f.getSize() / size);
+            if(counter % 2 == 0) {
+                System.out.println("v"+nodo);
+                double fact1 = width;
+                double fact2 = height * (nodo.sixe()/ size);
+                Rectangle shape = new Rectangle(fact1, fact2);
+                shape.setFill(getRandomColor());
+                shape.setStrokeType(StrokeType.INSIDE);
+                shape.setStroke(Color.WHITE);
+                HBox temp = new HBox();
+                
+                temp.getChildren().addAll(shape);
+                  Label extensionSize = new Label();
+                setLabelSize(extensionSize, nodo.sixe(),(String)nodo.getContent());
+                pane.getChildren().add(temp);
+                
+            }else {
+                System.out.println("h"+nodo);
+                double fact1 = width * (nodo.sixe() / size);
                 double fact2 = height;
                 Rectangle shape = new Rectangle(fact1, fact2);
                 shape.setFill(getRandomColor());
@@ -95,34 +137,25 @@ public class controladorArchivos {
                 shape.setStroke(Color.WHITE);
                 VBox temp = new VBox();
                 temp.getChildren().addAll(shape);
+                  Label extensionSize = new Label();
+                setLabelSize(extensionSize, nodo.sixe(),(String)nodo.getContent());
                 pane.getChildren().add(temp);
-            } else if (!f.isDirectory() && type.equals("v")) {
-                double fact1 = width;
-                double fact2 = height * (f.getSize() / size);
-                Rectangle shape = new Rectangle(fact1, fact2);
-                shape.setFill(getRandomColor());
-                shape.setStrokeType(StrokeType.INSIDE);
-                shape.setStroke(Color.WHITE);
-                HBox temp = new HBox();
-                temp.getChildren().addAll(shape);
-                pane.getChildren().add(temp);
-            } else if (f.isDirectory() && type.equals("h")) {
-                double size2 = f.getSize();
-                VBox box = new VBox();
-                box.setMaxWidth(width * (size2 / size));
-                box.setMaxHeight(height);
-                Painting(f, box, box.getMaxWidth(), box.getMaxHeight(), "v");
-                pane.getChildren().add(box);
-            } else if (f.isDirectory() && type.equals("v")) {
-                double size2 = f.getSize();
-                HBox box = new HBox();
-                box.setMaxWidth(width);
-                box.setMaxHeight(height * (size2 / size));
-                Painting(f, box, box.getMaxWidth(), box.getMaxHeight(), "h");
-                pane.getChildren().add(box);
-            }
-        });
+                
+            } 
+        
     }
+    
+     public Color getRandomColor() {
+        Random rd = new Random();
+        float r = rd.nextFloat();
+        float g = rd.nextFloat();
+        float b = rd.nextFloat();
+        Color randomColor = new Color(r, g, b, 1);
+        return randomColor;
+    }
+       
+       
+    @FXML
     public void salir(){
          Stage estageActual = (Stage) btnSalir.getScene().getWindow();
             estageActual.close();

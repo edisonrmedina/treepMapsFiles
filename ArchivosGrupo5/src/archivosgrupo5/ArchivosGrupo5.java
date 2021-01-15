@@ -13,7 +13,7 @@ public class ArchivosGrupo5 extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("inicio.fxml"));
-        Scene scene = new Scene(root, 960, 741.4);
+        Scene scene = new Scene(root, 960, 650);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Visualizador de archivos -- TreeMap-- Grupo 5");
         primaryStage.show();
