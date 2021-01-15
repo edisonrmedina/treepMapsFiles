@@ -99,18 +99,18 @@ public class controladorArchivos {
         tamanioTot.getChildren().addAll(graphicSizeTotal, extensionSize);
         container.getChildren().addAll(tamanioTot, graphics);
         long totalSize=arbolArchivos.recorrerTOTALtamanio(arbolArchivos);
-        int counter=2;
-        Painting(arbolArchivos, graphics, 300.0, 200.0, counter,totalSize);
+
+        Painting(arbolArchivos, graphics, 300.0, 200.0, "2",totalSize);
             
         
         center.getChildren().addAll(container);
 //        save.setDisable(false);
     }
-    public void Painting(TreeMap<String> map, Pane pane, double width, double height,int counter,long size) { 
+    public void Painting(TreeMap<String> map, Pane pane, double width, double height,String counter,long size) { 
       List<TreeMap<String>> arbolList=map.recorrerEnAnchura(map);
-        for(TreeMap<String> nodo: arbolList){   
-        if(nodo.getRoot().isIsDirectory()){
-            if(counter % 2 == 0) {
+        arbolList.forEach((nodo) -> {{   
+
+            if(counter.equals("2")&&!nodo.getRoot().isIsDirectory()) {
                 System.out.println("v"+nodo);
                 double fact1 = width;
                 double fact2 = height * (nodo.getRoot().sixe()/ size);
@@ -124,8 +124,7 @@ public class controladorArchivos {
                   Label extensionSize = new Label();
                 setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
                 pane.getChildren().add(temp);
-                counter++;
-            }else {
+            }else if(counter.equals("2")&&!nodo.getRoot().isIsDirectory()) {
                 System.out.println("h"+nodo);
                 double fact1 = width * (nodo.getRoot().sixe() / size);
                 double fact2 = height;
@@ -138,29 +137,29 @@ public class controladorArchivos {
                   Label extensionSize = new Label();
                 setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
                 pane.getChildren().add(temp);
-                counter++;
-            } }else{
-            if (counter % 2 == 0) {
+
+            }else if (counter.equals("1")&& nodo.getRoot().isIsDirectory()) {
                 System.out.println("Directorio v"+nodo);
+                System.out.println(nodo.getRoot().isIsDirectory());
                 double size2 = nodo.getRoot().getSize();
                 HBox box = new HBox();
                 box.setMaxWidth(width);
                 box.setMaxHeight(height * (size2 / size));
-                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(),counter+1,size );
+                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(),"1",size );
                 pane.getChildren().add(box);
-                counter++;
+
             }
-            else {
+            else if (counter.equals("2")&& nodo.getRoot().isIsDirectory()) {
                 System.out.println("Directorio h"+nodo);
                 double size2 = nodo.getRoot().getSize();
                 VBox box = new VBox();
                 box.setMaxWidth(width * (size2 / size));
                 box.setMaxHeight(height);
-                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(), counter+1,size);
+                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(), "2",size);
                 pane.getChildren().add(box);
-                counter++;
+
             } 
-        }}
+        }});
         
     }
     
