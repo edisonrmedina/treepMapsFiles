@@ -108,10 +108,11 @@ public class controladorArchivos {
     }
     public void Painting(TreeMap<String> map, Pane pane, double width, double height,int counter,long size) { 
       List<TreeMap<String>> arbolList=map.recorrerEnAnchura(map);
+      
         for(TreeMap<String> nodo: arbolList){   
         if(nodo.getRoot().isIsDirectory()){
             if(counter % 2 == 0) {
-                System.out.println("v"+nodo);
+                System.out.println("Directorio v"+nodo);
                 double fact1 = width;
                 double fact2 = height * (nodo.getRoot().sixe()/ size);
                 Rectangle shape = new Rectangle(fact1, fact2);
@@ -139,7 +140,8 @@ public class controladorArchivos {
                 setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
                 pane.getChildren().add(temp);
                 counter++;
-            } }else{
+            }
+        }else{
             if (counter % 2 == 0) {
                 System.out.println("Directorio v"+nodo);
                 double size2 = nodo.getRoot().getSize();
