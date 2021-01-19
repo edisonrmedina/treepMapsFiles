@@ -14,8 +14,8 @@ import java.util.Stack;
 public class TreeMap<T> {
     private TreeNode<T> root;
 
-    public TreeMap(T content,long size) {
-        this.root=new TreeNode(content,size);
+    public TreeMap(T content,float size,String name) {
+        this.root=new TreeNode(content,size,name);
     }
     
     public TreeNode<T> getRoot() {
@@ -28,7 +28,10 @@ public class TreeMap<T> {
     public boolean isEmpty(){
         return this.root==null;
     }
-
+    private boolean isLeaf(){
+        return this.root.getChildren().isEmpty();
+    }
+    
     @Override
     public String toString() {
         return "TreeMap{" + "root=" + root + '}';
@@ -47,29 +50,12 @@ public class TreeMap<T> {
                 if(!hijo.getRoot().isVisited()){
                     cola.add(hijo);
                     hijo.getRoot().setVisited(true);
+                    if(hijo.isLeaf())
+                        hijo.getRoot().setIsDirectory(false);
                 }
             }
         }
         return recorrido;
     }
     
-     public long recorrerTOTALtamanio(TreeMap<T> root){
-        long total=0;
-        Queue<TreeNode<T>> cola=new LinkedList<>();
-        cola.add(root.getRoot());
-        root.root.setVisited(true);
-        while(!cola.isEmpty()){
-            TreeNode<T> nodo=cola.remove();
-            total=total+nodo.getSize();
-            List<TreeMap<T>> hijos=nodo.getChildren();
-            for(TreeMap<T> hijo: hijos){
-                TreeNode<T> hijoSelect=hijo.getRoot();
-                if(!hijoSelect.isVisited()){
-                    cola.add(hijoSelect);
-                    hijoSelect.setVisited(true);
-                }
-            }
-        }
-        return total;
-    }
 }

@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -11,13 +12,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -39,7 +46,7 @@ public class controladorArchivos {
     private Button btnSalir;
     
     @FXML
-    private AnchorPane center;
+    private AnchorPane arbolDibujo;
     
     void initialize() {
         assert mnBar != null : "fx:id=\"mnBar\" was not injected: check your FXML file 'inicio.fxml'.";    
@@ -53,8 +60,6 @@ public class controladorArchivos {
          try{
             File[] files = selectedDir.listFiles();
             arbol = ArbolDirectorios.creaArbolDeDirectorios(selectedDir);
-//            System.out.println(arbol);
-//            System.out.println(selectedDir.getAbsolutePath());
             
         }catch(NullPointerException ex){
                 Alert altDer = new Alert(Alert.AlertType.INFORMATION);
@@ -92,77 +97,92 @@ public class controladorArchivos {
         graphicSizeTotal.setStroke(Color.WHITE);
         Label extensionSize = new Label();
         setLabelSize(extensionSize, arbolArchivos.getRoot().getSize(),(String)arbolArchivos.getRoot().getContent());
-//        Label tamanio = new Label();
-//        tamanio.setMinSize(minWidth, minHeight);
-//        tamanio.setMaxSize(minWidth, minHeight);
-
+        List<TreeMap<String>> arbolList=arbolArchivos.recorrerEnAnchura(arbolArchivos);
+        List<TreeMap<String>> listaDirectorios=new LinkedList<>();
+        float totalDirectorios=0;
+        for(TreeMap<String> arbol : arbolList){
+            System.out.println(arbol);
+            if(!arbol.getRoot().getChildren().isEmpty())
+                listaDirectorios.add(arbol);
+                totalDirectorios+=arbol.getRoot().getSize();
+    }
         tamanioTot.getChildren().addAll(graphicSizeTotal, extensionSize);
         container.getChildren().addAll(tamanioTot, graphics);
-        long totalSize=arbolArchivos.recorrerTOTALtamanio(arbolArchivos);
 
-        Painting(arbolArchivos, graphics, 300.0, 200.0, "2",totalSize);
+        PaintingDir(listaDirectorios, graphics, 300.0, 200.0, "2",totalDirectorios);
             
-        
-        center.getChildren().addAll(container);
+        arbolDibujo.getChildren().addAll(container);
 //        save.setDisable(false);
     }
-    public void Painting(TreeMap<String> map, Pane pane, double width, double height,String counter,long size) { 
-      List<TreeMap<String>> arbolList=map.recorrerEnAnchura(map);
-        arbolList.forEach((nodo) -> {{   
-
-            if(counter.equals("2")&&!nodo.getRoot().isIsDirectory()) {
-                System.out.println("v"+nodo);
+    public void PaintingDir(List<TreeMap<String>> map, Pane pane, double width, double height,String counter,float size) { 
+        for(TreeMap<String> nodo:map){  
+            if (counter.equals("1")) {
+                HBox box = new HBox();
+                box.setMaxWidth(width);
+                box.setMaxHeight(height*(nodo.getRoot().getSize()));
+                System.out.println((nodo.getRoot().getSize()/size));
+                box.setStyle("-fx-background-color: #FFFFFF;");
+                PaintingDocs(nodo.getRoot().getChildren(), box, box.getMaxWidth(), box.getMaxHeight(),"1",nodo.getRoot().getSize() );
+                pane.getChildren().addAll(box);
+                counter="2";
+            }
+            else if (counter.equals("2")) {
+                //System.out.println("Directorio h"+nodo);
+                VBox box = new VBox();
+                box.setMaxWidth(width*(nodo.getRoot().getSize()/size));
+                System.out.println((nodo.getRoot().getSize()/size));
+                box.setMaxHeight(height);
+                box.setStyle("-fx-background-color: #FFFFFF;");
+                PaintingDocs(nodo.getRoot().getChildren(), box, box.getMaxWidth(), box.getMaxHeight(), "2",nodo.getRoot().getSize());
+                pane.getChildren().add(box);
+                counter="1";
+            } 
+        }
+        
+    }
+    public void PaintingDocs(List<TreeMap<String>> map, Pane pane, double width, double height,String counter,float size) { 
+        for(TreeMap<String> nodo:map){  
+            Pane tempPane=new Pane();
+            if(counter.equals("1")&&nodo.getRoot().getChildren().isEmpty()) {
+                //System.out.println("v"+nodo);
                 double fact1 = width;
-                double fact2 = height * (nodo.getRoot().sixe()/ size);
+                double fact2 = height * ((nodo.getRoot().getSize())/ size);
+                System.out.println((nodo.getRoot().getSize()/size));
                 Rectangle shape = new Rectangle(fact1, fact2);
                 shape.setFill(getRandomColor());
                 shape.setStrokeType(StrokeType.INSIDE);
                 shape.setStroke(Color.WHITE);
                 HBox temp = new HBox();
+                counter="2";
                 
-                temp.getChildren().addAll(shape);
-                  Label extensionSize = new Label();
-                setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
-                pane.getChildren().add(temp);
-            }else if(counter.equals("2")&&!nodo.getRoot().isIsDirectory()) {
-                System.out.println("h"+nodo);
-                double fact1 = width * (nodo.getRoot().sixe() / size);
+                Label extensionSize = new Label((String)nodo.getRoot().getName());
+                tempPane.getChildren().addAll(shape,extensionSize);
+                temp.getChildren().addAll(tempPane);
+                  
+                pane.getChildren().addAll(temp);
+            }else if(counter.equals("2")&&nodo.getRoot().getChildren().isEmpty()) {
+                //System.out.println("h"+nodo);
+                double fact1 = width * ((nodo.getRoot().getSize()) / size);
+                System.out.println((nodo.getRoot().getSize()/size));
                 double fact2 = height;
                 Rectangle shape = new Rectangle(fact1, fact2);
                 shape.setFill(getRandomColor());
                 shape.setStrokeType(StrokeType.INSIDE);
                 shape.setStroke(Color.WHITE);
                 VBox temp = new VBox();
-                temp.getChildren().addAll(shape);
-                  Label extensionSize = new Label();
-                setLabelSize(extensionSize, nodo.getRoot().sixe(),(String)nodo.getRoot().getContent());
-                pane.getChildren().add(temp);
+                
+               
+                Label extensionSize = new Label((String)nodo.getRoot().getName());
+                tempPane.getChildren().addAll(shape,extensionSize);
+                temp.getChildren().addAll(tempPane);
+                  
+                pane.getChildren().addAll(temp);
+                counter="1";
 
-            }else if (counter.equals("1")&& nodo.getRoot().isIsDirectory()) {
-                System.out.println("Directorio v"+nodo);
-                System.out.println(nodo.getRoot().isIsDirectory());
-                double size2 = nodo.getRoot().getSize();
-                HBox box = new HBox();
-                box.setMaxWidth(width);
-                box.setMaxHeight(height * (size2 / size));
-                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(),"1",size );
-                pane.getChildren().add(box);
-
-            }
-            else if (counter.equals("2")&& nodo.getRoot().isIsDirectory()) {
-                System.out.println("Directorio h"+nodo);
-                double size2 = nodo.getRoot().getSize();
-                VBox box = new VBox();
-                box.setMaxWidth(width * (size2 / size));
-                box.setMaxHeight(height);
-                Painting(nodo, box, box.getMaxWidth(), box.getMaxHeight(), "2",size);
-                pane.getChildren().add(box);
-
-            } 
-        }});
+            
+        }
         
-    }
-    
+    }}
      public Color getRandomColor() {
         Random rd = new Random();
         float r = rd.nextFloat();

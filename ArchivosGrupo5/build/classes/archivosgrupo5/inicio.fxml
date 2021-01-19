@@ -24,6 +24,6 @@
                </font></Button>
          </children>
       </HBox>
-      <AnchorPane fx:id="center" prefHeight="363.0" prefWidth="640.0" />
+      <AnchorPane fx:id="arbolDibujo" prefHeight="368.0" prefWidth="640.0" />
    </children>
 </VBox>

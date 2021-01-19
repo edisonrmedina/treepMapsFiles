@@ -16,7 +16,8 @@ import java.util.List;
 public class TreeNode<T> {
     private List<TreeMap<T>> children = new ArrayList<>();
     private T content;
-    private long size = 0;
+    private String name;
+    private float size = 0;
     private boolean visited=false;
     private boolean isDirectory;
 
@@ -24,13 +25,22 @@ public class TreeNode<T> {
         return visited;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
 
-    public TreeNode(T content, long size) {
+    public TreeNode(T content, float size, String name) {
         this.content = content;
         this.size = size;
+        this.name=name;
     }
 
     public void addChild(TreeMap child) {
@@ -41,16 +51,8 @@ public class TreeNode<T> {
         return this.content;
     }
 
-    public long getSize() {
+    public float getSize() {
         return size;
-    }
-    public long sixe(){
-        long totalSize = getSize( );
-        if( isDirectory( ) ){
-            List<TreeMap<T>> childrenList=getChildren();
-            for (TreeMap<T> child:children)
-                totalSize += child.getRoot().sixe( );}
-        return totalSize;
     }
 
     public boolean isIsDirectory() {
@@ -61,7 +63,7 @@ public class TreeNode<T> {
         this.isDirectory = isDirectory;
     }
     
-    public void setSize(long size) {
+    public void setSize(float size) {
         this.size = size;
     }
 
