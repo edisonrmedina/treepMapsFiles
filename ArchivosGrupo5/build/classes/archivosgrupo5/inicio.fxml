@@ -6,12 +6,22 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="700.0" maxWidth="1200.0" prefHeight="717.0" prefWidth="1012.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archivosgrupo5.controladorArchivos">
+<AnchorPane id="AnchorPane" maxHeight="600.0" maxWidth="1200.0" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archivosgrupo5.controladorArchivos">
     <children>
-      <StackPane fx:id="bodega" layoutX="7.0" layoutY="61.0" maxHeight="700.0" maxWidth="1210.0" prefHeight="700.0" prefWidth="1210.0" />
-      <HBox layoutY="-1.0" maxWidth="1225.0" prefHeight="52.0" prefWidth="1225.0" scaleShape="false" style="-fx-background-color: #C46D5E;">
+      <StackPane fx:id="bodega" layoutX="14.0" layoutY="56.0" maxHeight="530.0" maxWidth="1170.0" prefHeight="530.0" prefWidth="1170.0" />
+      <HBox layoutY="-1.0" maxHeight="52.0" maxWidth="1200.0" prefHeight="52.0" prefWidth="1200.0" scaleShape="false" style="-fx-background-color: #C46D5E;">
          <children>
-            <Button mnemonicParsing="false" onAction="#abrirDirectorio" prefHeight="61.0" prefWidth="138.0" style="-fx-background-color: #F3C98B; -fx-background-radius: 0;" text="Abrir Directorio" textFill="#bf4141">
+            <Button maxHeight="52.0" mnemonicParsing="false" onAction="#abrirDirectorio" prefHeight="52.0" prefWidth="138.0" style="-fx-background-color: #F3C98B; -fx-background-radius: 0;" text="Abrir Directorio" textFill="#bf4141">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button maxHeight="52.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="148.0" style="-fx-background-color: #DAA588; -fx-background-radius: 0;" text="Guardar captura" textFill="#a12525">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button maxHeight="52.0" mnemonicParsing="false" onAction="#salir" prefHeight="52.0" prefWidth="66.0" style="-fx-background-color: #F56960; -fx-background-radius: 0;" text="Salir" textFill="#ffe4e4">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

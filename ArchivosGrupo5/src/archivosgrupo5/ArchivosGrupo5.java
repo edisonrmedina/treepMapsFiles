@@ -16,8 +16,8 @@ public class ArchivosGrupo5 extends Application
         
         Scene scene = new Scene(root);
         stage.setResizable(false);
-        stage.setMaxHeight(600);
-        stage.setMaxWidth(1200);
+        stage.setMaxHeight(650);
+        stage.setMaxWidth(1220);;
         stage.setScene(scene);
         stage.setTitle("TreeMaps");
         stage.show();
