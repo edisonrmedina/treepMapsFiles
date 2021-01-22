@@ -1,4 +1,4 @@
-package archivosGrupo5;
+package archivosgrupo5;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;

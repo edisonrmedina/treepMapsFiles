@@ -1,4 +1,4 @@
-package archivosGrupo5;
+package archivosgrupo5;
 
 import java.net.URL;
 import java.util.ResourceBundle;

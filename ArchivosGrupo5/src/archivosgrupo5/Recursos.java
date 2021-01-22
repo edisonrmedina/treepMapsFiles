@@ -1,4 +1,4 @@
-package archivosGrupo5;
+package archivosgrupo5;
 
 import java.io.File;
 import java.util.List;
