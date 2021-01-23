@@ -38,6 +38,19 @@ public class controladorArchivos implements Initializable
         pant.close();
     }
     
+    @FXML
+    private void guardarCap(ActionEvent event)
+    {
+        try
+        {
+            Recursos.guadarCaptura(cuadro);
+        }
+        
+        catch(NullPointerException e)
+        {
+            System.out.println(e);
+        }
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 

@@ -1,8 +1,15 @@
 package archivosgrupo5;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 
 public class Recursos 
 {
@@ -45,7 +52,7 @@ public class Recursos
         {
             String Ruta = archivoBase.getAbsolutePath();
             String nombre = archivoBase.getName();
-            double tamañoRuta = tamañoNodo(Ruta)/1048576;
+            double tamañoRuta = tamañoNodo(Ruta)/1073741824;
             
             TreeMap arbolBase = new TreeMap(Ruta, tamañoRuta, nombre);
             return crearArbolDirectorios(arbolBase);
@@ -68,7 +75,7 @@ public class Recursos
         {
             String nuevaRuta = archivo.getAbsolutePath();
             String nombre = archivo.getName();
-            double tamañoRuta = tamañoNodo(nuevaRuta)/1048576;
+            double tamañoRuta = tamañoNodo(nuevaRuta)/1073741824;
             
             TreeMap nuevito = new TreeMap(nuevaRuta, tamañoRuta, nombre);
             arbolBase.añadirHijo(nuevito);
@@ -84,7 +91,7 @@ public class Recursos
     //Imprime el directorio de manera identada (demora según el directorio seleccionado)------------------------------------------------------   
     private static void imprimirElArbol(TreeMap arbolito, String concatenar)
     {
-        System.out.println(concatenar + arbolito.getRaiz().getNombre() +"    tamaño: " + arbolito.getRaiz().getTamañoFichero()+"MB");
+        System.out.println(concatenar + arbolito.getRaiz().getNombre() +"    tamaño: " + arbolito.getRaiz().getTamañoFichero()+"GB");
         
         if(arbolito.getRaiz().getHijos().size()>0)
         {
@@ -106,5 +113,31 @@ public class Recursos
         TreeMap arbolito = arbolPrincipal(seleccionado.getAbsolutePath());
         imprimirElArbol(arbolito, "");
         return arbolito;
+    }
+    
+    public static void guadarCaptura(Pane panel)
+    {
+        WritableImage captura = panel.getScene().snapshot(null);
+        
+        FileChooser archivoGuardar = new FileChooser();
+        archivoGuardar.setTitle("Seleccione ruta para guardar su captura");
+        archivoGuardar.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagen" ,"*.png"));
+        
+        File archivo = archivoGuardar.showSaveDialog(null);
+        String ruta = archivo.getAbsolutePath();
+        
+        File imagen = new File(ruta);
+        
+        try
+        {
+            ImageIO.write(SwingFXUtils.fromFXImage(captura, null), "png", imagen);
+            Desktop dt = Desktop.getDesktop();
+            dt.open(imagen);
+        }
+        
+        catch(IOException e)
+        {
+            System.out.println(e);
+        }
     }
 }

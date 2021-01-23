@@ -16,7 +16,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button maxHeight="52.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="148.0" style="-fx-background-color: #DAA588; -fx-background-radius: 0;" text="Guardar captura" textFill="#a12525">
+            <Button maxHeight="52.0" mnemonicParsing="false" onAction="#guardarCap" prefHeight="52.0" prefWidth="148.0" style="-fx-background-color: #DAA588; -fx-background-radius: 0;" text="Guardar captura" textFill="#a12525">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -29,4 +29,3 @@
          </children></HBox>
     </children>
 </AnchorPane>
-
